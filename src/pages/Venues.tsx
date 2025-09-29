@@ -8,6 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Link } from 'react-router-dom';
+import { MobileNav } from '@/components/ui/mobile-nav';
 import venue1 from '@/assets/venue-1.jpg';
 import venue2 from '@/assets/venue-2.jpg';
 import venue3 from '@/assets/venue-3.jpg';
@@ -214,50 +215,62 @@ const Venues = () => {
     <div className="min-h-screen bg-gradient-elegant">
       {/* Header */}
       <header className="bg-white border-b border-border shadow-card sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center space-x-2">
-              <Star className="h-8 w-8 text-secondary" />
-              <span className="text-2xl font-display font-bold text-primary">VenueBook</span>
+              <Star className="h-6 w-6 sm:h-8 sm:w-8 text-secondary" />
+              <span className="text-lg sm:text-2xl font-display font-bold text-primary">VenueBook</span>
             </Link>
             
-            <div className="flex-1 max-w-2xl mx-8">
-              <div className="relative">
+            <div className="hidden sm:flex flex-1 max-w-md lg:max-w-2xl mx-4 lg:mx-8">
+              <div className="relative w-full">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input 
                   placeholder="Search venues, locations..." 
-                  className="pl-10 h-12 border-gray-200 focus:border-accent"
+                  className="pl-10 h-12 border-gray-200 focus:border-accent w-full"
                 />
               </div>
             </div>
 
-            <nav className="flex items-center space-x-4">
+            <nav className="flex items-center space-x-2 sm:space-x-4">
               <Link to="/owner/dashboard">
-                <Button variant="outline" className="hidden md:block">
+                <Button variant="outline" className="hidden lg:block">
                   List Your Venue
                 </Button>
               </Link>
+              <MobileNav />
             </nav>
+          </div>
+          
+          {/* Mobile Search */}
+          <div className="sm:hidden mt-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input 
+                placeholder="Search venues, locations..." 
+                className="pl-10 h-12 border-gray-200 focus:border-accent"
+              />
+            </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
+      <div className="container mx-auto px-4 py-6 sm:py-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 gap-4">
           <div>
-            <h1 className="text-3xl md:text-4xl font-display font-bold text-primary mb-2">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-primary mb-2">
               Wedding Venues
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground text-sm sm:text-base">
               Found {venues.length} venues matching your search
             </p>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center justify-between sm:justify-end space-x-3 sm:space-x-4">
             {/* Mobile Filter */}
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="outline" size="sm" className="md:hidden">
+                <Button variant="outline" size="sm" className="lg:hidden min-h-[44px]">
                   <SlidersHorizontal className="h-4 w-4 mr-2" />
                   Filters
                 </Button>
@@ -278,7 +291,7 @@ const Venues = () => {
                 variant={viewMode === 'grid' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('grid')}
-                className="h-8 px-3"
+                className="h-8 px-2 sm:px-3"
               >
                 <Grid className="h-4 w-4" />
               </Button>
@@ -286,7 +299,7 @@ const Venues = () => {
                 variant={viewMode === 'map' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('map')}
-                className="h-8 px-3"
+                className="h-8 px-2 sm:px-3"
               >
                 <Map className="h-4 w-4" />
               </Button>
@@ -294,9 +307,9 @@ const Venues = () => {
           </div>
         </div>
 
-        <div className="flex gap-8">
+        <div className="flex gap-6 lg:gap-8">
           {/* Desktop Filters Sidebar */}
-          <div className="hidden md:block w-80 flex-shrink-0">
+          <div className="hidden lg:block w-80 flex-shrink-0">
             <Card className="card-elegant p-6 sticky top-24">
               <h2 className="text-xl font-display font-semibold text-primary mb-6 flex items-center">
                 <Filter className="mr-2 h-5 w-5" />
@@ -309,11 +322,11 @@ const Venues = () => {
           {/* Main Content */}
           <div className="flex-1">
             {viewMode === 'grid' ? (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
                 {venues.map((venue) => (
                   <Link key={venue.id} to={`/venues/${venue.id}`}>
-                    <Card className="card-venue group flex">
-                      <div className="w-48 h-48 flex-shrink-0 overflow-hidden">
+                    <Card className="card-venue group flex flex-col sm:flex-row">
+                      <div className="w-full sm:w-48 h-48 flex-shrink-0 overflow-hidden">
                         <img 
                           src={venue.image} 
                           alt={venue.name}
@@ -321,27 +334,27 @@ const Venues = () => {
                         />
                       </div>
                       
-                      <CardContent className="flex-1 p-6">
-                        <div className="flex items-start justify-between mb-3">
-                          <div>
-                            <div className="flex items-center gap-2 mb-2">
-                              <h3 className="text-xl font-display font-semibold text-primary">
+                      <CardContent className="flex-1 p-4 sm:p-6">
+                        <div className="flex flex-col sm:flex-row sm:items-start justify-between mb-3 gap-2 sm:gap-0">
+                          <div className="flex-1">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
+                              <h3 className="text-lg sm:text-xl font-display font-semibold text-primary">
                                 {venue.name}
                               </h3>
                               {venue.verified && (
-                                <Badge variant="secondary" className="bg-green-100 text-green-700 border-0 text-xs">
+                                <Badge variant="secondary" className="bg-green-100 text-green-700 border-0 text-xs w-fit">
                                   Verified
                                 </Badge>
                               )}
                             </div>
                             <div className="flex items-center text-muted-foreground mb-2">
-                              <MapPin className="h-4 w-4 mr-1" />
+                              <MapPin className="h-4 w-4 mr-1 flex-shrink-0" />
                               <span className="text-sm">{venue.location}</span>
                             </div>
                           </div>
                           
-                          <div className="text-right">
-                            <div className="flex items-center gap-1 mb-2">
+                          <div className="flex sm:flex-col items-center sm:items-end gap-2 sm:gap-1">
+                            <div className="flex items-center gap-1">
                               <Star className="h-4 w-4 star-filled fill-current" />
                               <span className="text-sm font-medium">{venue.rating}</span>
                               <span className="text-sm text-muted-foreground">({venue.reviews})</span>
@@ -358,7 +371,7 @@ const Venues = () => {
                         </div>
 
                         <div className="flex flex-wrap gap-2 mb-4">
-                          {venue.amenities.slice(0, 3).map((amenity) => {
+                          {venue.amenities.slice(0, 2).map((amenity) => {
                             const IconComponent = amenityIcons[amenity];
                             return (
                               <Badge key={amenity} variant="secondary" className="bg-secondary/10 text-accent border-0 text-xs">
@@ -367,19 +380,19 @@ const Venues = () => {
                               </Badge>
                             );
                           })}
-                          {venue.amenities.length > 3 && (
+                          {venue.amenities.length > 2 && (
                             <Badge variant="secondary" className="bg-muted text-muted-foreground border-0 text-xs">
-                              +{venue.amenities.length - 3} more
+                              +{venue.amenities.length - 2} more
                             </Badge>
                           )}
                         </div>
 
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                           <div>
                             <p className="text-sm text-muted-foreground">Starting from</p>
                             <p className="text-lg font-semibold text-primary">{venue.price}</p>
                           </div>
-                          <Button size="sm" className="btn-elegant">
+                          <Button size="sm" className="btn-elegant w-full sm:w-auto min-h-[44px]">
                             View Details
                           </Button>
                         </div>

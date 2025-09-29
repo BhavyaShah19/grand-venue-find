@@ -130,11 +130,11 @@ All colors MUST be HSL for consistency and theming.
 @layer components {
   /* Elegant button variants */
   .btn-hero {
-    @apply bg-gradient-to-r from-accent to-secondary text-white font-medium px-8 py-4 rounded-xl shadow-gold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300;
+    @apply bg-gradient-to-r from-accent to-secondary text-white font-medium px-6 sm:px-8 py-3 sm:py-4 rounded-xl shadow-gold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 min-h-[44px];
   }
 
   .btn-elegant {
-    @apply bg-primary text-primary-foreground hover:bg-primary/90 font-medium px-6 py-3 rounded-lg shadow-elegant hover:shadow-lg transition-all duration-300;
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 font-medium px-4 sm:px-6 py-2 sm:py-3 rounded-lg shadow-elegant hover:shadow-lg transition-all duration-300 min-h-[44px];
   }
 
   /* Card styles */

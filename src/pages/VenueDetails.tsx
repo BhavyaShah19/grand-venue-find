@@ -20,6 +20,7 @@ import {
   Check,
   X
 } from 'lucide-react';
+import { MobileNav } from '@/components/ui/mobile-nav';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -128,40 +129,42 @@ const VenueDetails = () => {
     <div className="min-h-screen bg-gradient-elegant">
       {/* Header */}
       <header className="bg-white border-b border-border shadow-card sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <Link to="/venues">
-                <Button variant="ghost" size="sm">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back to Venues
+                <Button variant="ghost" size="sm" className="min-h-[44px]">
+                  <ArrowLeft className="h-4 w-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">Back to Venues</span>
+                  <span className="sm:hidden">Back</span>
                 </Button>
               </Link>
-              <Separator orientation="vertical" className="h-6" />
+              <Separator orientation="vertical" className="h-6 hidden sm:block" />
               <Link to="/" className="flex items-center space-x-2">
-                <Star className="h-6 w-6 text-secondary" />
-                <span className="text-xl font-display font-bold text-primary">VenueBook</span>
+                <Star className="h-5 w-5 sm:h-6 sm:w-6 text-secondary" />
+                <span className="text-lg sm:text-xl font-display font-bold text-primary">VenueBook</span>
               </Link>
             </div>
             
-            <div className="flex items-center space-x-2">
-              <Button variant="outline" size="sm">
-                <Share2 className="h-4 w-4 mr-2" />
-                Share
+            <div className="flex items-center space-x-1 sm:space-x-2">
+              <Button variant="outline" size="sm" className="min-h-[44px]">
+                <Share2 className="h-4 w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Share</span>
               </Button>
-              <Button variant="outline" size="sm">
-                <Heart className="h-4 w-4 mr-2" />
-                Save
+              <Button variant="outline" size="sm" className="min-h-[44px]">
+                <Heart className="h-4 w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Save</span>
               </Button>
+              <MobileNav />
             </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="container mx-auto px-4 py-6 sm:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-6 lg:space-y-8">
             {/* Image Gallery */}
             <Card className="card-elegant overflow-hidden">
               <div className="relative aspect-[16/9]">
@@ -195,14 +198,14 @@ const VenueDetails = () => {
                 </div>
               </div>
 
-              {/* Thumbnail Strip */}
-              <div className="p-4">
-                <div className="flex space-x-2 overflow-x-auto">
+                {/* Thumbnail Strip */}
+              <div className="p-3 sm:p-4">
+                <div className="flex space-x-2 overflow-x-auto pb-2">
                   {venue.images.map((image, index) => (
                     <button
                       key={index}
                       onClick={() => setCurrentImageIndex(index)}
-                      className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all duration-200 ${
+                      className={`flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden border-2 transition-all duration-200 ${
                         index === currentImageIndex 
                           ? 'border-accent shadow-md' 
                           : 'border-transparent hover:border-gray-300'
@@ -263,28 +266,28 @@ const VenueDetails = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                   {venue.amenities.map((amenity, index) => (
                     <div 
                       key={index} 
-                      className={`flex items-center space-x-3 p-3 rounded-lg border ${
+                      className={`flex items-center space-x-2 sm:space-x-3 p-3 rounded-lg border ${
                         amenity.available 
                           ? 'border-green-200 bg-green-50' 
                           : 'border-gray-200 bg-gray-50'
                       }`}
                     >
-                      <amenity.icon className={`h-5 w-5 ${
+                      <amenity.icon className={`h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 ${
                         amenity.available ? 'text-green-600' : 'text-gray-400'
                       }`} />
-                      <span className={`text-sm ${
+                      <span className={`text-xs sm:text-sm flex-1 ${
                         amenity.available ? 'text-green-800' : 'text-gray-500'
                       }`}>
                         {amenity.name}
                       </span>
                       {amenity.available ? (
-                        <Check className="h-4 w-4 text-green-600 ml-auto" />
+                        <Check className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 flex-shrink-0" />
                       ) : (
-                        <X className="h-4 w-4 text-gray-400 ml-auto" />
+                        <X className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400 flex-shrink-0" />
                       )}
                     </div>
                   ))}
@@ -406,8 +409,8 @@ const VenueDetails = () => {
           </div>
 
           {/* Booking Sidebar */}
-          <div className="lg:col-span-1">
-            <Card className="card-elegant sticky top-24">
+          <div className="lg:col-span-1 order-first lg:order-last">
+            <Card className="card-elegant lg:sticky lg:top-24">
               <CardHeader>
                 <CardTitle className="text-xl font-display font-semibold text-primary">
                   Check Availability

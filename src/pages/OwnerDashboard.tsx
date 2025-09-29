@@ -17,6 +17,7 @@ import {
   Clock,
   AlertCircle
 } from 'lucide-react';
+import { MobileNav } from '@/components/ui/mobile-nav';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -176,64 +177,68 @@ const OwnerDashboard = () => {
     <div className="min-h-screen bg-gradient-elegant">
       {/* Header */}
       <header className="bg-white border-b border-border shadow-card">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <Link to="/" className="flex items-center space-x-2">
-                <Star className="h-8 w-8 text-secondary" />
-                <span className="text-2xl font-display font-bold text-primary">VenueBook</span>
+                <Star className="h-6 w-6 sm:h-8 sm:w-8 text-secondary" />
+                <span className="text-lg sm:text-2xl font-display font-bold text-primary">VenueBook</span>
               </Link>
-              <Badge variant="secondary" className="bg-secondary/10 text-accent border-0">
+              <Badge variant="secondary" className="bg-secondary/10 text-accent border-0 hidden sm:block">
                 Owner Dashboard
               </Badge>
             </div>
             
-            <div className="flex items-center space-x-4">
-              <Button className="btn-hero">
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <Button className="btn-hero hidden sm:flex">
                 <Plus className="h-4 w-4 mr-2" />
                 Add New Venue
               </Button>
+              <Button className="btn-hero sm:hidden p-2 min-h-[44px]">
+                <Plus className="h-5 w-5" />
+              </Button>
               
               <div className="flex items-center space-x-2">
-                <Avatar>
+                <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
                   <AvatarImage src="" />
-                  <AvatarFallback className="bg-secondary text-white font-semibold">
+                  <AvatarFallback className="bg-secondary text-white font-semibold text-sm">
                     {owner.name.split(' ').map(n => n[0]).join('')}
                   </AvatarFallback>
                 </Avatar>
-                <div className="hidden md:block">
+                <div className="hidden lg:block">
                   <p className="text-sm font-medium text-primary">{owner.name}</p>
                   <p className="text-xs text-muted-foreground">Venue Owner</p>
                 </div>
+                <MobileNav />
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-display font-bold text-primary mb-2">
+      <div className="container mx-auto px-4 py-6 sm:py-8">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-primary mb-2">
             Welcome back, {owner.name.split(' ')[0]}!
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm sm:text-base">
             Manage your venue listings and track your business performance
           </p>
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="listings">My Listings</TabsTrigger>
-            <TabsTrigger value="bookings">Bookings</TabsTrigger>
-            <TabsTrigger value="reviews">Reviews</TabsTrigger>
-            <TabsTrigger value="calendar">Calendar</TabsTrigger>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6 sm:space-y-8">
+          <TabsList className="grid w-full grid-cols-3 sm:grid-cols-5 h-auto">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm px-2 sm:px-4 py-2">Overview</TabsTrigger>
+            <TabsTrigger value="listings" className="text-xs sm:text-sm px-2 sm:px-4 py-2">Listings</TabsTrigger>
+            <TabsTrigger value="bookings" className="text-xs sm:text-sm px-2 sm:px-4 py-2">Bookings</TabsTrigger>
+            <TabsTrigger value="reviews" className="text-xs sm:text-sm px-2 sm:px-4 py-2 hidden sm:block">Reviews</TabsTrigger>
+            <TabsTrigger value="calendar" className="text-xs sm:text-sm px-2 sm:px-4 py-2 hidden sm:block">Calendar</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-8">
+          <TabsContent value="overview" className="space-y-6 sm:space-y-8">
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
               <Card className="card-elegant">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -298,7 +303,7 @@ const OwnerDashboard = () => {
             </div>
 
             {/* Recent Activity */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
               <Card className="card-elegant">
                 <CardHeader>
                   <CardTitle className="text-xl font-display font-semibold text-primary">
@@ -307,16 +312,16 @@ const OwnerDashboard = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {bookings.slice(0, 3).map((booking) => (
-                    <div key={booking.id} className="flex items-center justify-between p-4 border border-border rounded-lg">
-                      <div>
-                        <h4 className="font-semibold text-primary">{booking.customerName}</h4>
-                        <p className="text-sm text-muted-foreground">{booking.venueName}</p>
-                        <p className="text-sm text-muted-foreground">
+                    <div key={booking.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 border border-border rounded-lg gap-3 sm:gap-0">
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-primary text-sm sm:text-base">{booking.customerName}</h4>
+                        <p className="text-xs sm:text-sm text-muted-foreground">{booking.venueName}</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground">
                           {booking.eventDate} • {booking.guests} guests
                         </p>
                       </div>
-                      <div className="text-right">
-                        <p className="font-semibold text-primary">₹{(booking.amount / 100000).toFixed(1)}L</p>
+                      <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-2 sm:gap-1">
+                        <p className="font-semibold text-primary text-sm sm:text-base">₹{(booking.amount / 100000).toFixed(1)}L</p>
                         <Badge 
                           variant="secondary" 
                           className={`${getStatusColor(booking.status)} border-0 text-xs`}
@@ -371,18 +376,18 @@ const OwnerDashboard = () => {
               </Button>
             </div>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
               <div className="relative flex-1 max-w-sm">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input placeholder="Search venues..." className="pl-10" />
+                <Input placeholder="Search venues..." className="pl-10 h-12" />
               </div>
-              <Button variant="outline">
-                <Filter className="h-4 w-4 mr-2" />
-                Filter
+              <Button variant="outline" className="min-h-[48px] w-full sm:w-auto">
+                <Filter className="h-4 w-4 sm:mr-2" />
+                <span className="sm:inline">Filter</span>
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
               {venues.map((venue) => (
                 <Card key={venue.id} className="card-venue">
                   <div className="aspect-[4/3] overflow-hidden">
@@ -392,7 +397,7 @@ const OwnerDashboard = () => {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <CardContent className="p-6">
+                  <CardContent className="p-4 sm:p-6">
                     <div className="flex items-start justify-between mb-3">
                       <div>
                         <h3 className="text-lg font-display font-semibold text-primary mb-1">
