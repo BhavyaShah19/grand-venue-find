@@ -2,41 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* VenueBook Design System - Elegant Wedding & Event Platform
+All colors MUST be HSL for consistency and theming.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Brand Colors - Sophisticated Navy & Gold Palette */
+    --background: 32 20% 97%;          /* Soft cream background */
+    --foreground: 220 40% 15%;         /* Deep charcoal for text */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;                 /* Pure white cards */
+    --card-foreground: 220 40% 15%;    /* Charcoal text on cards */
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 40% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 220 40% 15%;            /* Deep navy/charcoal primary */
+    --primary-foreground: 32 20% 97%;  /* Cream text on primary */
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 37 100% 85%;          /* Warm gold accent */
+    --secondary-foreground: 220 40% 15%; /* Dark text on gold */
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 32 12% 92%;               /* Subtle muted background */
+    --muted-foreground: 220 20% 45%;   /* Muted text */
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 37 80% 55%;              /* Rich copper accent */
+    --accent-foreground: 32 20% 97%;   /* Light text on accent */
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 60%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 32 15% 88%;              /* Soft border color */
+    --input: 32 15% 88%;               /* Input border */
+    --ring: 37 80% 55%;                /* Focus ring in copper */
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;                 /* Slightly more rounded */
+
+    /* Luxury Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(220 40% 15%), hsl(220 35% 25%));
+    --gradient-gold: linear-gradient(135deg, hsl(37 100% 85%), hsl(37 80% 55%));
+    --gradient-elegant: linear-gradient(180deg, hsl(32 20% 97%), hsl(32 12% 92%));
+
+    /* Shadows for Depth */
+    --shadow-elegant: 0 4px 20px -4px hsl(220 40% 15% / 0.1);
+    --shadow-card: 0 2px 10px -2px hsl(220 40% 15% / 0.08);
+    --shadow-gold: 0 4px 20px -4px hsl(37 80% 55% / 0.3);
+
+    /* Animation Timings */
+    --transition-elegant: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
 
@@ -56,41 +70,44 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Dark theme with sophisticated luxury feel */
+    --background: 220 40% 8%;           /* Very dark navy */
+    --foreground: 32 20% 92%;           /* Light cream text */
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 220 35% 12%;                /* Dark navy cards */
+    --card-foreground: 32 20% 92%;      /* Light text on cards */
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 220 35% 12%;
+    --popover-foreground: 32 20% 92%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 32 20% 92%;              /* Light cream primary in dark */
+    --primary-foreground: 220 40% 15%;  /* Dark text on light primary */
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 37 100% 75%;           /* Brighter gold in dark */
+    --secondary-foreground: 220 40% 15%; /* Dark text on gold */
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 220 30% 15%;               /* Dark muted background */
+    --muted-foreground: 32 10% 65%;     /* Muted light text */
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 37 80% 60%;               /* Bright copper accent */
+    --accent-foreground: 220 40% 8%;    /* Dark text on bright accent */
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 32 20% 92%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 220 25% 20%;              /* Dark border */
+    --input: 220 25% 20%;               /* Dark input border */
+    --ring: 37 80% 60%;                 /* Copper focus ring */
+
+    /* Dark theme gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(220 40% 8%), hsl(220 35% 18%));
+    --gradient-gold: linear-gradient(135deg, hsl(37 100% 75%), hsl(37 80% 60%));
+    --gradient-elegant: linear-gradient(180deg, hsl(220 40% 8%), hsl(220 30% 15%));
+
+    /* Dark shadows */
+    --shadow-elegant: 0 4px 20px -4px hsl(0 0% 0% / 0.3);
+    --shadow-card: 0 2px 10px -2px hsl(0 0% 0% / 0.2);
+    --shadow-gold: 0 4px 20px -4px hsl(37 80% 60% / 0.4);
   }
 }
 
@@ -100,6 +117,51 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-body;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+    font-feature-settings: "kern" 1, "liga" 1, "swsh" 1;
+  }
+}
+
+@layer components {
+  /* Elegant button variants */
+  .btn-hero {
+    @apply bg-gradient-to-r from-accent to-secondary text-white font-medium px-8 py-4 rounded-xl shadow-gold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300;
+  }
+
+  .btn-elegant {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 font-medium px-6 py-3 rounded-lg shadow-elegant hover:shadow-lg transition-all duration-300;
+  }
+
+  /* Card styles */
+  .card-elegant {
+    @apply bg-card border border-border rounded-xl shadow-card hover:shadow-elegant transition-all duration-300;
+  }
+
+  .card-venue {
+    @apply card-elegant overflow-hidden hover:-translate-y-1 cursor-pointer;
+  }
+
+  /* Hero section */
+  .hero-overlay {
+    @apply absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/50;
+  }
+
+  /* Search elements */
+  .search-container {
+    @apply bg-white/95 backdrop-blur-sm rounded-2xl shadow-elegant border border-white/20 p-6;
+  }
+
+  /* Rating stars */
+  .star-filled {
+    @apply text-secondary;
+  }
+
+  .star-empty {
+    @apply text-muted-foreground;
   }
 }
