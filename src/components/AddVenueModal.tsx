@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -28,6 +28,7 @@ import {
   SelectValue 
 } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Calendar } from '@/components/ui/calendar';
 import { 
   Car, 
   ChefHat, 
@@ -39,10 +40,12 @@ import {
   Upload, 
   X, 
   Plus, 
-  Trash2 
+  Trash2,
+  CalendarX
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { format } from 'date-fns';
 
 const venueTypes = ['Banquet Hall', 'Garden', 'Heritage', 'Villa', 'Luxury Hall', 'Farm House'];
 
@@ -73,22 +76,40 @@ const venueFormSchema = z.object({
   additionalServices: z.array(z.object({
     name: z.string(),
     price: z.string()
-  }))
+  })),
+  unavailableDates: z.array(z.date()).optional()
 });
 
 type VenueFormValues = z.infer<typeof venueFormSchema>;
 
+interface VenueData {
+  id?: string;
+  name: string;
+  location: string;
+  venueType: string;
+  capacity: string;
+  description: string;
+  basePrice: string;
+  pricePerGuest: string;
+  amenities: string[];
+  includedServices: string[];
+  additionalServices: { name: string; price: string }[];
+  unavailableDates?: Date[];
+}
+
 interface AddVenueModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  venueData?: VenueData | null;
 }
 
-export function AddVenueModal({ open, onOpenChange }: AddVenueModalProps) {
+export function AddVenueModal({ open, onOpenChange, venueData }: AddVenueModalProps) {
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [includedService, setIncludedService] = useState('');
   const [additionalServiceName, setAdditionalServiceName] = useState('');
   const [additionalServicePrice, setAdditionalServicePrice] = useState('');
+  const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
 
   const form = useForm<VenueFormValues>({
     resolver: zodResolver(venueFormSchema),
@@ -102,9 +123,47 @@ export function AddVenueModal({ open, onOpenChange }: AddVenueModalProps) {
       pricePerGuest: '',
       amenities: [],
       includedServices: [],
-      additionalServices: []
+      additionalServices: [],
+      unavailableDates: []
     }
   });
+
+  // Reset form when modal opens with venue data
+  useEffect(() => {
+    if (open && venueData) {
+      form.reset({
+        name: venueData.name,
+        location: venueData.location,
+        venueType: venueData.venueType,
+        capacity: venueData.capacity,
+        description: venueData.description,
+        basePrice: venueData.basePrice,
+        pricePerGuest: venueData.pricePerGuest,
+        amenities: venueData.amenities,
+        includedServices: venueData.includedServices,
+        additionalServices: venueData.additionalServices,
+        unavailableDates: venueData.unavailableDates || []
+      });
+      setUnavailableDates(venueData.unavailableDates || []);
+    } else if (open && !venueData) {
+      form.reset({
+        name: '',
+        location: '',
+        venueType: '',
+        capacity: '',
+        description: '',
+        basePrice: '',
+        pricePerGuest: '',
+        amenities: [],
+        includedServices: [],
+        additionalServices: [],
+        unavailableDates: []
+      });
+      setUnavailableDates([]);
+      setImages([]);
+      setImagePreviews([]);
+    }
+  }, [open, venueData, form]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -160,8 +219,30 @@ export function AddVenueModal({ open, onOpenChange }: AddVenueModalProps) {
     form.setValue('additionalServices', current.filter((_, i) => i !== index));
   };
 
+  const handleDateSelect = (date: Date | undefined) => {
+    if (!date) return;
+    
+    const dateExists = unavailableDates.some(
+      d => format(d, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd')
+    );
+    
+    if (dateExists) {
+      // Remove date if already selected
+      const newDates = unavailableDates.filter(
+        d => format(d, 'yyyy-MM-dd') !== format(date, 'yyyy-MM-dd')
+      );
+      setUnavailableDates(newDates);
+      form.setValue('unavailableDates', newDates);
+    } else {
+      // Add date
+      const newDates = [...unavailableDates, date];
+      setUnavailableDates(newDates);
+      form.setValue('unavailableDates', newDates);
+    }
+  };
+
   const onSubmit = (data: VenueFormValues) => {
-    if (images.length === 0) {
+    if (!venueData && images.length === 0) {
       toast({
         title: 'Please upload at least one image',
         variant: 'destructive'
@@ -171,25 +252,31 @@ export function AddVenueModal({ open, onOpenChange }: AddVenueModalProps) {
 
     console.log('Form Data:', data);
     console.log('Images:', images);
+    console.log('Unavailable Dates:', unavailableDates);
     
     toast({
-      title: 'Venue added successfully!',
-      description: 'Your venue has been submitted for review.'
+      title: venueData ? 'Venue updated successfully!' : 'Venue added successfully!',
+      description: venueData ? 'Your changes have been saved.' : 'Your venue has been submitted for review.'
     });
     
     onOpenChange(false);
     form.reset();
     setImages([]);
     setImagePreviews([]);
+    setUnavailableDates([]);
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] p-0">
         <DialogHeader className="px-6 pt-6 pb-4 border-b">
-          <DialogTitle className="text-2xl font-display font-bold">Add New Venue</DialogTitle>
+          <DialogTitle className="text-2xl font-display font-bold">
+            {venueData ? 'Edit Venue' : 'Add New Venue'}
+          </DialogTitle>
           <DialogDescription>
-            Fill in the details below to list your venue on our platform
+            {venueData 
+              ? 'Update your venue details and manage availability' 
+              : 'Fill in the details below to list your venue on our platform'}
           </DialogDescription>
         </DialogHeader>
 
@@ -494,6 +581,57 @@ export function AddVenueModal({ open, onOpenChange }: AddVenueModalProps) {
                 </div>
               </div>
 
+              {/* Availability Calendar */}
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-primary">Venue Availability</h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Click on dates to mark them as unavailable for booking
+                  </p>
+                </div>
+                
+                <div className="border border-border rounded-lg p-4">
+                  <Calendar
+                    mode="multiple"
+                    selected={unavailableDates}
+                    onDayClick={handleDateSelect}
+                    disabled={(date) => date < new Date()}
+                    className="rounded-md border-0"
+                    classNames={{
+                      day_selected: "bg-destructive text-destructive-foreground hover:bg-destructive hover:text-destructive-foreground",
+                    }}
+                  />
+                  
+                  {unavailableDates.length > 0 && (
+                    <div className="mt-4 pt-4 border-t">
+                      <div className="flex items-center gap-2 mb-3">
+                        <CalendarX className="h-4 w-4 text-destructive" />
+                        <span className="text-sm font-medium">Unavailable Dates ({unavailableDates.length})</span>
+                      </div>
+                      <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
+                        {unavailableDates
+                          .sort((a, b) => a.getTime() - b.getTime())
+                          .map((date, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center gap-1 px-2 py-1 bg-destructive/10 text-destructive rounded text-xs"
+                            >
+                              <span>{format(date, 'MMM dd, yyyy')}</span>
+                              <button
+                                type="button"
+                                onClick={() => handleDateSelect(date)}
+                                className="hover:bg-destructive/20 rounded-full p-0.5"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
               {/* Submit Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t">
                 <Button
@@ -505,7 +643,7 @@ export function AddVenueModal({ open, onOpenChange }: AddVenueModalProps) {
                   Cancel
                 </Button>
                 <Button type="submit" className="flex-1 bg-secondary hover:bg-secondary/90">
-                  Add Venue
+                  {venueData ? 'Update Venue' : 'Add Venue'}
                 </Button>
               </div>
             </form>

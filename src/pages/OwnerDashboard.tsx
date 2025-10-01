@@ -40,6 +40,7 @@ import { AddVenueModal } from '@/components/AddVenueModal';
 const OwnerDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [isAddVenueModalOpen, setIsAddVenueModalOpen] = useState(false);
+  const [editingVenue, setEditingVenue] = useState<any>(null);
 
   // Mock data
   const owner = {
@@ -62,6 +63,18 @@ const OwnerDashboard = () => {
       id: '1',
       name: 'Garden Paradise Resort',
       location: 'Andheri, Mumbai',
+      venueType: 'Garden',
+      capacity: '200-500',
+      description: 'Garden Paradise is an exquisite wedding resort nestled in the heart of Mumbai, offering a perfect blend of natural beauty and elegant sophistication.',
+      basePrice: '₹2,50,000',
+      pricePerGuest: '₹1,200',
+      amenities: ['Parking', 'Catering', 'Photography', 'Music'],
+      includedServices: ['Venue decoration', 'Basic lighting', 'Security service'],
+      additionalServices: [
+        { name: 'Premium catering', price: '₹800/guest' },
+        { name: 'Photography package', price: '₹50,000' }
+      ],
+      unavailableDates: [new Date('2024-02-14'), new Date('2024-03-10')],
       status: 'Active',
       rating: 4.8,
       reviews: 124,
@@ -74,6 +87,17 @@ const OwnerDashboard = () => {
       id: '2',
       name: 'Royal Ballroom',
       location: 'Connaught Place, Delhi',
+      venueType: 'Banquet Hall',
+      capacity: '150-300',
+      description: 'An elegant ballroom perfect for sophisticated events and celebrations.',
+      basePrice: '₹1,80,000',
+      pricePerGuest: '₹1,000',
+      amenities: ['AC', 'Parking', 'Catering', 'Music'],
+      includedServices: ['Basic decoration', 'Parking facility'],
+      additionalServices: [
+        { name: 'DJ & sound system', price: '₹25,000' }
+      ],
+      unavailableDates: [new Date('2024-02-20')],
       status: 'Active',
       rating: 4.9,
       reviews: 89,
@@ -86,6 +110,15 @@ const OwnerDashboard = () => {
       id: '3',
       name: 'Heritage Manor',
       location: 'Pink City, Jaipur',
+      venueType: 'Heritage',
+      capacity: '100-250',
+      description: 'A beautiful heritage property with traditional architecture.',
+      basePrice: '₹3,00,000',
+      pricePerGuest: '₹1,500',
+      amenities: ['Heritage', 'Photography', 'Catering'],
+      includedServices: ['Traditional decoration', 'Heritage tour'],
+      additionalServices: [],
+      unavailableDates: [],
       status: 'Pending Review',
       rating: 4.7,
       reviews: 156,
@@ -430,7 +463,10 @@ const OwnerDashboard = () => {
                             <Eye className="h-4 w-4 mr-2" />
                             View Details
                           </DropdownMenuItem>
-                          <DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => {
+                            setEditingVenue(venue);
+                            setIsAddVenueModalOpen(true);
+                          }}>
                             <Edit className="h-4 w-4 mr-2" />
                             Edit Listing
                           </DropdownMenuItem>
@@ -673,7 +709,11 @@ const OwnerDashboard = () => {
       {/* Add Venue Modal */}
       <AddVenueModal 
         open={isAddVenueModalOpen} 
-        onOpenChange={setIsAddVenueModalOpen} 
+        onOpenChange={(open) => {
+          setIsAddVenueModalOpen(open);
+          if (!open) setEditingVenue(null);
+        }}
+        venueData={editingVenue}
       />
     </div>
   );
