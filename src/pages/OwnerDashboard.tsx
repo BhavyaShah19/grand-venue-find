@@ -35,9 +35,11 @@ import { Link } from 'react-router-dom';
 import venue1 from '@/assets/venue-1.jpg';
 import venue2 from '@/assets/venue-2.jpg';
 import venue3 from '@/assets/venue-3.jpg';
+import { AddVenueModal } from '@/components/AddVenueModal';
 
 const OwnerDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [isAddVenueModalOpen, setIsAddVenueModalOpen] = useState(false);
 
   // Mock data
   const owner = {
@@ -190,11 +192,17 @@ const OwnerDashboard = () => {
             </div>
             
             <div className="flex items-center space-x-2 sm:space-x-4">
-              <Button className="btn-hero hidden sm:flex">
+              <Button 
+                className="btn-hero hidden sm:flex"
+                onClick={() => setIsAddVenueModalOpen(true)}
+              >
                 <Plus className="h-4 w-4 mr-2" />
                 Add New Venue
               </Button>
-              <Button className="btn-hero sm:hidden p-2 min-h-[44px]">
+              <Button 
+                className="btn-hero sm:hidden p-2 min-h-[44px]"
+                onClick={() => setIsAddVenueModalOpen(true)}
+              >
                 <Plus className="h-5 w-5" />
               </Button>
               
@@ -370,7 +378,10 @@ const OwnerDashboard = () => {
                 <h2 className="text-2xl font-display font-bold text-primary mb-2">My Venue Listings</h2>
                 <p className="text-muted-foreground">Manage your venue properties and their details</p>
               </div>
-              <Button className="btn-hero">
+              <Button 
+                className="btn-hero hidden sm:flex"
+                onClick={() => setIsAddVenueModalOpen(true)}
+              >
                 <Plus className="h-4 w-4 mr-2" />
                 Add New Venue
               </Button>
@@ -658,6 +669,12 @@ const OwnerDashboard = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Add Venue Modal */}
+      <AddVenueModal 
+        open={isAddVenueModalOpen} 
+        onOpenChange={setIsAddVenueModalOpen} 
+      />
     </div>
   );
 };
