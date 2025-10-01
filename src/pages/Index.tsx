@@ -76,13 +76,18 @@ const Index = () => {
             <Star className="h-6 w-6 sm:h-8 sm:w-8 text-secondary" />
             <span className="text-xl sm:text-2xl font-display font-bold text-white">VenueBook</span>
           </div>
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-6">
             <Link to="/venues" className="text-white hover:text-secondary transition-colors">Browse Venues</Link>
             <Link to="#" className="text-white hover:text-secondary transition-colors">How it Works</Link>
             <Link to="#" className="text-white hover:text-secondary transition-colors">Contact</Link>
             <Link to="/owner/dashboard">
               <Button variant="outline" className="text-white border-white hover:bg-white hover:text-primary">
                 List Your Venue
+              </Button>
+            </Link>
+            <Link to="/auth">
+              <Button className="bg-secondary text-white hover:bg-secondary/90">
+                Sign In
               </Button>
             </Link>
           </nav>

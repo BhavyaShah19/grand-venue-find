@@ -16,6 +16,7 @@ export const MobileNav = ({ isTransparent = false }: MobileNavProps) => {
     { to: '#', label: 'How it Works' },
     { to: '#', label: 'Contact' },
     { to: '/owner/dashboard', label: 'List Your Venue' },
+    { to: '/auth', label: 'Sign In', isButton: true },
   ];
 
   return (
@@ -47,7 +48,11 @@ export const MobileNav = ({ isTransparent = false }: MobileNavProps) => {
               key={item.to}
               to={item.to}
               onClick={() => setIsOpen(false)}
-              className="block py-3 px-4 text-lg font-medium text-primary hover:bg-muted rounded-lg transition-colors"
+              className={`block py-3 px-4 text-lg font-medium rounded-lg transition-colors ${
+                item.isButton 
+                  ? 'bg-secondary text-white hover:bg-secondary/90 text-center' 
+                  : 'text-primary hover:bg-muted'
+              }`}
             >
               {item.label}
             </Link>
